@@ -5,6 +5,12 @@ const TableSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  reservations: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Reservation",
+    },
+  ],
   tableType: {
     type: String,
     required: true,
@@ -33,8 +39,6 @@ const menuItemSchema = new mongoose.Schema({
     required: true,
   },
 });
-
-//const MenuItem = mongoose.model("MenuItem", menuItemSchema);
 
 const RestaurantSchema = new mongoose.Schema({
   name: {

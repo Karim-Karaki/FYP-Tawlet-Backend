@@ -39,6 +39,38 @@ class RestaurantService {
     await restaurant.save();
     return restaurant.layout;
   }
+
+  //get menu
+  async getMenu(restaurantId) {
+    const restaurant = await Restaurant.findById(restaurantId);
+    return restaurant ? restaurant.menu : null;
+  }
+
+  //add menu item
+  async addMenuItem(restaurantId, menuItem) {
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      throw new Error("Restaurant not found");
+    }
+    restaurant.menu.push(menuItem);
+    await restaurant.save();
+    return restaurant.menu;
+  }
+
+  //add table to layout
+  async addTableToLayout(restaurantId, table) {
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      throw new Error("Restaurant not found");
+    }
+    restaurant.layout.push(table);
+    await restaurant.save();
+    return restaurant.layout;
+  }
+
+  async getRestaurantByCuisine(cuisine) {
+    return Restaurant.find({ cuisine });
+  }
 }
 
 module.exports = new RestaurantService();

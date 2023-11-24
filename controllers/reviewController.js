@@ -48,6 +48,29 @@ class ReviewController {
       res.status(400).json({ error: "Error deleting review" });
     }
   }
+
+  async getAllReviewsByRestaurant(req, res) {
+    try {
+      const { restaurantId } = req.params;
+      const reviews = await ReviewService.getAllReviewsByRestaurant(
+        restaurantId
+      );
+      res.json(reviews);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  async createReviewForRestaurant(req, res) {
+    try {
+      const { restaurantId } = req.params;
+      const reviewData = { ...req.body, restaurantId };
+      const review = await ReviewService.createReview(reviewData);
+      res.status(201).json(review);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  }
 }
 
 module.exports = new ReviewController();

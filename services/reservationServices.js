@@ -24,6 +24,14 @@ class ReservationService {
   async deleteReservation(id) {
     return Reservation.findByIdAndDelete(id);
   }
+
+  async getAllReservationsByGuest(guestId) {
+    return Reservation.find({ guestId: guestId });
+  }
+
+  async getAllReservationsByTable(tableId) {
+    return Reservation.find({ tableId: tableId });
+  }
 }
 
 module.exports = new ReservationService();
