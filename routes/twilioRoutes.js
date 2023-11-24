@@ -56,15 +56,26 @@ router.post("/verify-code", async (req, res) => {
 });
 
 router.post("/register-login", async (req, res) => {
-  const { phoneNumber } = req.body;
+  const { name, email, phoneNumber, dob } = req.body;
+  console.log(req.body);
+
+  // Check for required fields
+  if (!name || !email || !phoneNumber || !dob) {
+    return res.status(400).send({ error: "All fields are required" });
+  }
+
   try {
     let guest = await Guest.findOne({ phoneNumber: phoneNumber });
     if (!guest) {
-      guest = new Guest({ phoneNumber: phoneNumber });
+      // Create a new guest with all required fields
+      guest = new Guest({ name, email, phoneNumber, dob });
+      await guest.save();
     }
+
     const { accessToken, refreshToken } = generateTokens(guest._id);
-    guest.tokens = { access: accessToken, refresh: refreshToken };
+    guest.token = { access: accessToken, refresh: refreshToken };
     await guest.save();
+
     res.send({ accessToken, refreshToken });
   } catch (error) {
     res.status(500).send({ error: error.message });

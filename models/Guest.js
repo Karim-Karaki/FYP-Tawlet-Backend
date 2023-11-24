@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 
 const GuestSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
+    required: true,
     unique: true,
   },
   phoneNumber: {
@@ -11,8 +15,14 @@ const GuestSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  dob: String,
-  token: String,
+  dob: {
+    type: String,
+    unique: true,
+  },
+  token: {
+    access: String,
+    refresh: String,
+  },
 });
 
 module.exports = mongoose.model("Guest", GuestSchema);
