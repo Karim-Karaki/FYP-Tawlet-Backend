@@ -26,9 +26,7 @@ class RestaurantService {
   }
 
   async getLayout(restaurantId) {
-    const restaurant = await Restaurant.findById(restaurantId).populate(
-      "layout"
-    );
+    const restaurant = await Restaurant.findById(restaurantId);
     return restaurant ? restaurant.layout : null;
   }
 

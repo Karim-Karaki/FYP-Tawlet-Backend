@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const TableSchema = new mongoose.Schema({
-  restaurantId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Restaurant",
-    required: true,
-  },
   seatingCapacity: {
     type: Number,
     required: true,

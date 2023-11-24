@@ -1,5 +1,41 @@
 const mongoose = require("mongoose");
 
+const TableSchema = new mongoose.Schema({
+  seatingCapacity: {
+    type: Number,
+    required: true,
+  },
+  tableType: {
+    type: String,
+    required: true,
+    enum: ["round", "low", "high", "square", "rectangular", "custom", "booth"],
+  },
+  isReserved: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const menuItemSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  description: String,
+  price: {
+    type: Number,
+    required: true,
+  },
+  diet: [String],
+  imageURL: String,
+  feedsHowMany: {
+    type: String,
+    required: true,
+  },
+});
+
+//const MenuItem = mongoose.model("MenuItem", menuItemSchema);
+
 const RestaurantSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -17,18 +53,17 @@ const RestaurantSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  menuId: {
-    type: mongoose.Schema.Types.ObjectId,
+  menu: {
+    type: [{ item: menuItemSchema }],
     ref: "Menu",
   },
   layout: {
     type: [
-      [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Table",
-        },
-      ],
+      {
+        table: TableSchema,
+        x: Number,
+        y: Number,
+      },
     ],
     required: false,
   },
