@@ -24,10 +24,8 @@ app.use("/restaurants", restaurantRoutes);
 app.use("/guest", guestRoutes);
 app.use("/reservation", reservationRoutes);
 app.use("/table", tableRoutes);
-//app.use("/menuItem", menuItemRoutes);
-//app.use("/menu", menuRoutes);
 app.use("/review", reviewRoutes);
-//app.use("/twilio", twilioRoutes);
+app.use("/twilio", twilioRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

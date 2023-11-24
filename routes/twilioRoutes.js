@@ -91,3 +91,5 @@ router.post("/refresh-token", async (req, res) => {
     res.status(403).send("Invalid refresh token.");
   }
 });
+
+module.exports = router;
