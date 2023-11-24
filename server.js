@@ -7,8 +7,6 @@ const restaurantRoutes = require("./routes/restaurantRoutes");
 const guestRoutes = require("./routes/guestRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const tableRoutes = require("./routes/tableRoutes");
-//const menuItemRoutes = require("./routes/menuItemRoutes");
-//const menuRoutes = require("./routes/menuRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const twilioRoutes = require("./routes/twilioRoutes");
 
