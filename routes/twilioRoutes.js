@@ -59,7 +59,7 @@ router.post("/register-login", async (req, res) => {
   const { name, email, phoneNumber, dob } = req.body;
 
   // Check for required fields
-  if (!name || !email || !phoneNumber || !dob) {
+  if (!phoneNumber) {
     return res.status(400).send({ error: "All fields are required" });
   }
 
