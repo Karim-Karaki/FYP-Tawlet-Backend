@@ -77,7 +77,7 @@ router.post("/register-login", async (req, res) => {
     guest.token = { access: accessToken, refresh: refreshToken };
     await guest.save();
 
-    res.send({ accessToken, refreshToken });
+    res.send({ accessToken, refreshToken, message });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
