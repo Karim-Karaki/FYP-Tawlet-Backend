@@ -47,15 +47,13 @@ router.post("/verify-code", async (req, res) => {
 
     let guest = await Guest.findOne({ phoneNumber: phoneNumber });
     if (!guest) {
-      guest = new Guest({ name, email, phoneNumber, dob });
-      await guest.save();
       message = "New user created.";
     } else {
       message = "User already exists.";
     }
 
     if (verificationCheck.status === "approved") {
-      res.send({ verified: true, message });
+      res.send({ verified: true, message, guest });
     } else {
       res.send({ verified: false, message });
     }
@@ -86,7 +84,7 @@ router.post("/register-login", async (req, res) => {
     guest.token = { access: accessToken, refresh: refreshToken };
     await guest.save();
 
-    res.send({ accessToken, refreshToken, message });
+    res.send({ accessToken, refreshToken, message, guest });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
