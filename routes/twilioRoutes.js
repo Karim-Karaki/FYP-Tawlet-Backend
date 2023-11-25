@@ -57,7 +57,6 @@ router.post("/verify-code", async (req, res) => {
 
 router.post("/register-login", async (req, res) => {
   const { name, email, phoneNumber, dob } = req.body;
-  console.log(req.body);
 
   // Check for required fields
   if (!name || !email || !phoneNumber || !dob) {
@@ -67,9 +66,11 @@ router.post("/register-login", async (req, res) => {
   try {
     let guest = await Guest.findOne({ phoneNumber: phoneNumber });
     if (!guest) {
-      // Create a new guest with all required fields
       guest = new Guest({ name, email, phoneNumber, dob });
       await guest.save();
+      message = "New user created.";
+    } else {
+      message = "User already exists.";
     }
 
     const { accessToken, refreshToken } = generateTokens(guest._id);
