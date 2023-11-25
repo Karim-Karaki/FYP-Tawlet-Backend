@@ -45,10 +45,19 @@ router.post("/verify-code", async (req, res) => {
       .services(process.env.TWILIO_VERIFY_SID)
       .verificationChecks.create({ to: phoneNumber, code });
 
-    if (verificationCheck.status === "approved") {
-      res.send({ verified: true });
+    let guest = await Guest.findOne({ phoneNumber: phoneNumber });
+    if (!guest) {
+      guest = new Guest({ name, email, phoneNumber, dob });
+      await guest.save();
+      message = "New user created.";
     } else {
-      res.send({ verified: false });
+      message = "User already exists.";
+    }
+
+    if (verificationCheck.status === "approved") {
+      res.send({ verified: true, message });
+    } else {
+      res.send({ verified: false, message });
     }
   } catch (error) {
     res.status(500).send({ error: error.message });
