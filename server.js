@@ -17,6 +17,10 @@ app.use(express.json());
 
 app.use(morgan("combined"));
 
+app.get("/", (req, res) => {
+  res.send("Welcom to the Tawlet Backend API!");
+});
+
 // Routes middleware
 app.use("/restaurants", restaurantRoutes);
 app.use("/guest", guestRoutes);
