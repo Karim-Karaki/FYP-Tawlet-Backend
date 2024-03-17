@@ -111,4 +111,30 @@ router.post("/refresh-token", async (req, res) => {
   }
 });
 
+router.post("/PortalLogin", async (req, res) => {
+  const { portalUsername, password } = req.body;
+
+  try {
+    const restaurant = await Restaurant.findOne({ portalUsername });
+
+    if (!restaurant) {
+      return res.status(401).json({ message: "Authentication failed" });
+    }
+
+    const match = await bcrypt.compare(password, restaurant.password);
+
+    if (!match) {
+      return res.status(401).json({ message: "Authentication failed" });
+    }
+
+    const token = jwt.sign({ id: restaurant._id }, JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    res.json({ token, message: "Authentication successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

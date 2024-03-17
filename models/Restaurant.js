@@ -22,25 +22,16 @@ const TableSchema = new mongoose.Schema({
   },
 });
 
-const menuItemSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  description: String,
-  price: {
-    type: Number,
-    required: true,
-  },
-  diet: [String],
-  imageURL: String,
-  feedsHowMany: {
-    type: String,
-    required: true,
-  },
-});
-
 const RestaurantSchema = new mongoose.Schema({
+  portalUsername: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -48,6 +39,10 @@ const RestaurantSchema = new mongoose.Schema({
   location: {
     type: String,
     required: true,
+  },
+  sortieType: {
+    type: String,
+    required: false,
   },
   cuisine: {
     type: [String],
@@ -58,8 +53,8 @@ const RestaurantSchema = new mongoose.Schema({
     required: true,
   },
   menu: {
-    type: [{ item: menuItemSchema }],
-    ref: "Menu",
+    type: String,
+    required: false,
   },
   layout: {
     type: [
@@ -71,6 +66,19 @@ const RestaurantSchema = new mongoose.Schema({
     ],
     required: false,
   },
+});
+
+RestaurantSchema.pre("save", async function (next) {
+  // Only hash the password if it has been modified (or is new)
+  if (!this.isModified("password")) return next();
+
+  try {
+    const salt = await bcrypt.genSalt(saltRounds);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = mongoose.model("Restaurant", RestaurantSchema);

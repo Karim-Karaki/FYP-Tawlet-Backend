@@ -2,6 +2,8 @@ const express = require("express");
 const connectDB = require("./config/database");
 const morgan = require("morgan");
 
+//cors
+const cors = require("cors");
 // Routes
 const restaurantRoutes = require("./routes/restaurantRoutes");
 const guestRoutes = require("./routes/guestRoutes");
@@ -16,6 +18,8 @@ connectDB();
 app.use(express.json());
 
 app.use(morgan("combined"));
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Welcom to the Tawlet Backend API!");

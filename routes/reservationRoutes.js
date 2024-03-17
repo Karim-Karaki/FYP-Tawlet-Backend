@@ -19,4 +19,6 @@ router.get(
   reservationController.getAllReservationsByRestaurantAndDate
 );
 
+router.put("/confirm/:id", reservationController.confirmReservation);
+
 module.exports = router;

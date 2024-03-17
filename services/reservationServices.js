@@ -32,6 +32,14 @@ class ReservationService {
   async getAllReservationsByTable(tableId) {
     return Reservation.find({ tableId: tableId });
   }
+
+  async getBayyak(restaurantId) {
+    return Reservation.find({ restaurantId: restaurantId });
+  }
+
+  async getEmak(restaurantId, date) {
+    return Reservation.find({ restaurantId: restaurantId, date: date });
+  }
 }
 
 module.exports = new ReservationService();

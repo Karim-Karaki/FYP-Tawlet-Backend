@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
+const saltRounds = 10;
 
 const ReservationSchema = new mongoose.Schema({
   restaurantId: {
@@ -7,8 +10,7 @@ const ReservationSchema = new mongoose.Schema({
     required: true,
   },
   tableId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Table",
+    type: Number,
     required: true,
   },
   guestId: {

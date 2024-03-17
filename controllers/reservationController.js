@@ -88,8 +88,7 @@ class ReservationController {
   async getAllReservationsByRestaurant(req, res) {
     try {
       const { restaurantId } = req.params;
-      const reservations =
-        await ReservationService.getAllReservationsByRestaurant(restaurantId);
+      const reservations = await ReservationService.getBayyak(restaurantId);
       res.json(reservations);
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -100,12 +99,24 @@ class ReservationController {
     try {
       const { restaurantId } = req.params;
       const { date } = req.query;
-      const reservations =
-        await ReservationService.getAllReservationsByRestaurantAndDate(
-          restaurantId,
-          date
-        );
+      console.log(restaurantId, date);
+      const reservations = await ReservationService.getEmak(restaurantId, date);
       res.json(reservations);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  async confirmReservation(req, res) {
+    try {
+      const { id } = req.params;
+      const reservation = await ReservationService.updateReservation(id, {
+        confirmed: true,
+      });
+      if (!reservation) {
+        return res.status(404).json({ message: "Reservation not found" });
+      }
+      res.json(reservation);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
