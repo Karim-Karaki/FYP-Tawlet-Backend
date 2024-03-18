@@ -26,11 +26,6 @@ class ReviewService {
     return Review.find({ restaurantId: restaurantId });
   }
 
-  async createReview(reviewData) {
-    const review = new Review(reviewData);
-    return review.save();
-  }
-
   async getAllReservationsByRestaurant(restaurantId) {
     return Reservation.find({ restaurantId: restaurantId });
   }
@@ -46,6 +41,12 @@ class ReviewService {
       restaurantId: restaurantId,
       time: { $gte: startOfDay, $lte: endOfDay },
     });
+  }
+
+  async getAverageRatingByRestaurant(restaurantId) {
+    const reviews = await Review.find({ restaurantId: restaurantId });
+    const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+    return totalRating / reviews.length;
   }
 }
 

@@ -17,4 +17,9 @@ router.post(
   reviewController.createReviewForRestaurant
 );
 
+router.get(
+  "/restaurant/:restaurantId/average",
+  reviewController.getAverageRatingByRestaurant
+);
+
 module.exports = router;

@@ -35,6 +35,7 @@ class RestaurantController {
   async updateRestaurant(req, res) {
     try {
       const { id } = req.params;
+      console.log("id", id);
       const restaurant = await RestaurantService.updateRestaurant(id, req.body);
       if (!restaurant) {
         return res.status(404).json({ message: "Restaurant not found" });

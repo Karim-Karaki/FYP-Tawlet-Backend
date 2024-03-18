@@ -71,6 +71,20 @@ class ReviewController {
       res.status(400).json({ message: err.message });
     }
   }
+
+  async getAverageRatingByRestaurant(req, res) {
+    try {
+      //add a part to get the totalt number of reviews
+
+      const { restaurantId } = req.params;
+      const averageRating = await ReviewService.getAverageRatingByRestaurant(
+        restaurantId
+      );
+      res.json(averageRating);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
 }
 
 module.exports = new ReviewController();

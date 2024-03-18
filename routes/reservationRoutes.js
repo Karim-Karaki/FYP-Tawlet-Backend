@@ -8,8 +8,11 @@ router.post("/", reservationController.createReservation);
 router.get("/:id", reservationController.getReservationById);
 router.put("/:id", reservationController.updateReservation);
 router.delete("/:id", reservationController.deleteReservation);
+
 router.get("/guest/:guestId", reservationController.getAllReservationsByGuest);
+
 router.get("/table/:tableId", reservationController.getAllReservationsByTable);
+
 router.get(
   "/restaurant/:restaurantId",
   reservationController.getAllReservationsByRestaurant

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const TableSchema = new mongoose.Schema({
   seatingCapacity: {
@@ -56,17 +57,19 @@ const RestaurantSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  layout: {
-    type: [
-      {
-        table: TableSchema,
-        x: Number,
-        y: Number,
-      },
-    ],
-    required: false,
-  },
+  // layout: {
+  //   type: [
+  //     {
+  //       table: TableSchema,
+  //       x: Number,
+  //       y: Number,
+  //     },
+  //   ],
+  //   required: false,
+  // },
 });
+
+const saltRounds = 10;
 
 RestaurantSchema.pre("save", async function (next) {
   // Only hash the password if it has been modified (or is new)

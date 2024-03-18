@@ -9,6 +9,10 @@ const client = require("twilio")(accountSid, authToken);
 
 const router = express.Router();
 
+const JWT_SECRET = process.env.JWT_SECRET;
+const bcrypt = require("bcrypt");
+const Restaurant = require("../models/Restaurant");
+
 const generateTokens = (guestId) => {
   const accessToken = jwt.sign({ id: guestId }, process.env.JWT_SECRET, {
     expiresIn: "1h", // Access token with short expiry
@@ -130,8 +134,8 @@ router.post("/PortalLogin", async (req, res) => {
     const token = jwt.sign({ id: restaurant._id }, JWT_SECRET, {
       expiresIn: "24h",
     });
-
-    res.json({ token, message: "Authentication successful" });
+    const restaurantID = restaurant._id;
+    res.json({ token, restaurantID, message: "Authentication successful" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

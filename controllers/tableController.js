@@ -76,6 +76,43 @@ class TableController {
       res.status(400).json({ message: err.message });
     }
   }
+
+  // Continuing from your existing TableController class...
+
+  async getTablesByRestaurantId(req, res) {
+    try {
+      const { restaurantId } = req.params;
+      const tables = await TableService.getTablesByRestaurantId(restaurantId);
+      res.json(tables);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  async getAvailableTables(req, res) {
+    try {
+      const { restaurantId, date, timeSlot } = req.body;
+      console.log(restaurantId, date, timeSlot);
+      const availableTables = await TableService.getAvailableTables(
+        restaurantId,
+        date,
+        timeSlot
+      );
+      res.json(availableTables);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  async createTables(req, res) {
+    try {
+      const bulkTableData = req.body; // Expect an array of table objects
+      const tables = await TableService.createTables(bulkTableData);
+      res.status(201).json(tables);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  }
 }
 
 module.exports = new TableController();

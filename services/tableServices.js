@@ -1,4 +1,5 @@
 const Table = require("../models/Table");
+const Reservation = require("../models/Reservation");
 
 class TableService {
   async getAllTables() {
@@ -33,6 +34,35 @@ class TableService {
 
   async createTables(tablesData) {
     return Table.insertMany(tablesData);
+  }
+
+  // Continuing from your existing TableService class...
+
+  async getTablesByRestaurantId(restaurantId) {
+    return Table.find({ restaurantId });
+  }
+
+  async getAvailableTables(restaurantId, date, timeSlot) {
+    console.log(restaurantId, date, timeSlot);
+    const reservedTableIds = await Reservation.find(
+      {
+        restaurantId,
+        date,
+        timeSlot,
+        status: { $ne: "Cancelled" },
+      },
+      "tableId"
+    ).distinct("tableId");
+    console.log(reservedTableIds);
+
+    return Table.find({
+      restaurantId,
+      _id: { $nin: reservedTableIds },
+    });
+  }
+
+  async createTables(bulkTableData) {
+    return Table.insertMany(bulkTableData);
   }
 }
 
