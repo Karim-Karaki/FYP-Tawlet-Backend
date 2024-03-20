@@ -23,7 +23,10 @@ class ReviewService {
   }
 
   async getAllReviewsByRestaurant(restaurantId) {
-    return Review.find({ restaurantId: restaurantId });
+    return Review.find({ restaurantId: restaurantId }).populate(
+      "guestId",
+      "name"
+    );
   }
 
   async getAllReservationsByRestaurant(restaurantId) {
@@ -46,7 +49,9 @@ class ReviewService {
   async getAverageRatingByRestaurant(restaurantId) {
     const reviews = await Review.find({ restaurantId: restaurantId });
     const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
-    return totalRating / reviews.length;
+    const averageRating = totalRating / reviews.length;
+    const totalReviews = reviews.length;
+    return { averageRating, totalReviews };
   }
 }
 
