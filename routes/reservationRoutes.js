@@ -19,7 +19,7 @@ router.get(
 );
 router.get(
   "/restaurant/:restaurantId/date",
-  reservationController.getAllReservationsByRestaurantAndDate
+  reservationController.getReservationsByRestaurantAndDate
 );
 
 router.put("/confirm/:id", reservationController.confirmReservation);

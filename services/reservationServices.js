@@ -37,8 +37,16 @@ class ReservationService {
     return Reservation.find({ restaurantId: restaurantId });
   }
 
-  async getEmak(restaurantId, date) {
-    return Reservation.find({ restaurantId: restaurantId, date: date });
+  async getReservationsByRestaurantAndDate(restaurantId, date) {
+    const reservations = await Reservation.find({
+      restaurantId: restaurantId,
+      date: date,
+    })
+      .populate("tableId", "tableNumber")
+      .populate("guestId", "name");
+    //populate tableId by tableNumber
+    console.log(reservations);
+    return reservations;
   }
 }
 

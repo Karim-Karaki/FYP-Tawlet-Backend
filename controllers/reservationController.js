@@ -95,12 +95,16 @@ class ReservationController {
     }
   }
 
-  async getAllReservationsByRestaurantAndDate(req, res) {
+  async getReservationsByRestaurantAndDate(req, res) {
     try {
       const { restaurantId } = req.params;
       const { date } = req.query;
       console.log(restaurantId, date);
-      const reservations = await ReservationService.getEmak(restaurantId, date);
+      const reservations =
+        await ReservationService.getReservationsByRestaurantAndDate(
+          restaurantId,
+          date
+        );
       res.json(reservations);
     } catch (err) {
       res.status(500).json({ message: err.message });
