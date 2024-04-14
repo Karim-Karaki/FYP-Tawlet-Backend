@@ -14,11 +14,18 @@ class ReservationService {
     return Reservation.findById(id);
   }
 
-  async updateReservation(id, updateData) {
-    return Reservation.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
+  async updateReservationStatus(reservationId, status) {
+    const updatedReservation = await Reservation.findByIdAndUpdate(
+      reservationId,
+      { status: status },
+      { new: true }
+    );
+
+    if (!updatedReservation) {
+      throw new Error("Reservation not found");
+    }
+
+    return updatedReservation;
   }
 
   async deleteReservation(id) {

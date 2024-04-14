@@ -1,28 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const TableSchema = new mongoose.Schema({
-  seatingCapacity: {
-    type: Number,
-    required: true,
-  },
-  reservations: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Reservation",
-    },
-  ],
-  tableType: {
-    type: String,
-    required: true,
-    enum: ["round", "low", "high", "square", "rectangular", "custom", "booth"],
-  },
-  isReserved: {
-    type: Boolean,
-    default: false,
-  },
-});
-
 const RestaurantSchema = new mongoose.Schema({
   portalUsername: {
     type: String,
@@ -57,16 +35,14 @@ const RestaurantSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  // layout: {
-  //   type: [
-  //     {
-  //       table: TableSchema,
-  //       x: Number,
-  //       y: Number,
-  //     },
-  //   ],
-  //   required: false,
-  // },
+  layout: {
+    type: String,
+    required: false,
+  },
+  images: {
+    type: [String],
+    required: false,
+  },
 });
 
 const saltRounds = 10;

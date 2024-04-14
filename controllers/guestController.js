@@ -19,6 +19,15 @@ class GuestController {
     }
   }
 
+  async getTotalGuests(req, res) {
+    try {
+      const totalGuests = await GuestService.getTotalGuests();
+      res.status(200).json({ totalGuests });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
   async getGuestById(req, res) {
     try {
       const { id } = req.params;

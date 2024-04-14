@@ -28,6 +28,10 @@ class GuestService {
   async deleteGuest(id) {
     return Guest.findByIdAndDelete(id);
   }
+
+  async getTotalGuests() {
+    return Guest.countDocuments();
+  }
 }
 
 module.exports = new GuestService();

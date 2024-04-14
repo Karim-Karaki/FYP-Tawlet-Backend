@@ -71,6 +71,20 @@ class RestaurantService {
   async getRestaurantByCuisine(cuisine) {
     return Restaurant.find({ cuisine });
   }
+
+  async getTotalRestaurants() {
+    return Restaurant.countDocuments();
+  }
+
+  async updateMenu(restaurantId, newMenu) {
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      throw new Error("Restaurant not found");
+    }
+    restaurant.menu = newMenu;
+    await restaurant.save();
+    return restaurant.menu;
+  }
 }
 
 module.exports = new RestaurantService();

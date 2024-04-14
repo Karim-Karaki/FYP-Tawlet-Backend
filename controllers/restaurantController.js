@@ -126,6 +126,25 @@ class RestaurantController {
       res.status(500).json({ message: err.message });
     }
   }
+
+  async getTotalRestaurants(req, res) {
+    try {
+      const totalRestaurants = await RestaurantService.getTotalRestaurants();
+      res.status(200).json({ totalRestaurants });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+
+  async updateMenu(req, res) {
+    try {
+      const { id } = req.params;
+      const updatedMenu = await RestaurantService.updateMenu(id, req.body);
+      res.json(updatedMenu);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
 }
 
 module.exports = new RestaurantController();

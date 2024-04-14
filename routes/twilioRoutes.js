@@ -120,7 +120,7 @@ router.post("/PortalLogin", async (req, res) => {
 
   try {
     const restaurant = await Restaurant.findOne({ portalUsername });
-
+    console.log(restaurant);
     if (!restaurant) {
       return res.status(401).json({ message: "Authentication failed" });
     }

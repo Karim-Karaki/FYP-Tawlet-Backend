@@ -1,4 +1,8 @@
 const ReservationService = require("../services/reservationServices");
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const verifySid = process.env.TWILIO_VERIFY_SID;
+const client = require("twilio")(accountSid, authToken);
 
 class ReservationController {
   async getAllReservations(req, res) {
@@ -113,20 +117,34 @@ class ReservationController {
 
   async confirmReservation(req, res) {
     try {
-      const { id } = req.params;
-      const reservation = await ReservationService.updateReservation(id, {
-        confirmed: true,
-      });
-      if (!reservation) {
-        return res.status(404).json({ message: "Reservation not found" });
+      const reservationId = req.params.id;
+      const status = "Confirmed";
+
+      const updatedReservation =
+        await ReservationService.updateReservationStatus(reservationId, status);
+
+      //get the guest id from the reservation and then get the phoneNumber from the guestid
+
+      const reservation = await ReservationService.getReservationById(
+        reservationId
+      );
+      const guestId = reservation.guestId;
+      const guest = await Guest.findById(guestId);
+      const phoneNumber = guest.phoneNumber;
+
+      const confirmationCheck = await client.verify
+        .services(process.env.TWILIO_VERIFY_SID)
+        .verificationChecks.create({ to: phoneNumber, code });
+
+      if (confirmationCheck.status === "approved") {
+        res.send({ verified: true, message, guest });
+      } else {
+        res.send({ verified: false, message });
       }
-      res.json(reservation);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
   }
-
-  // Add methods for upcoming reservations and reservation history if needed
 }
 
 module.exports = new ReservationController();

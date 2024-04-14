@@ -64,6 +64,8 @@ class TableService {
   async createTables(bulkTableData) {
     return Table.insertMany(bulkTableData);
   }
+
+  //
 }
 
 module.exports = new TableService();
